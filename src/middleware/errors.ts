@@ -13,7 +13,7 @@ export default function errorMiddleware(
   const ErrorMessage = req.error || "Somethings Wrong";
 
   if (error instanceof Prisma.PrismaClientKnownRequestError) {
-    console.log(error);
+    console.log(error.message);
     const errors = Error_Code[error.code];
     return res.status(errors.code).json({ ...errors, detail: ErrorMessage });
   } else {
