@@ -8,7 +8,7 @@ import { CustomRequest } from "../interface/express_interface";
 class TaskController {
   async getAllTasks(req: Request, res: Response) {
     const allTasks = await prisma.task.findMany();
-    res.status(200).json(allTasks);
+    res.status(200).json({ ...HTTP_CODE.success, detail: allTasks });
   }
 
   async getTaskById(req: Request, res: Response, next: NextFunction) {
@@ -69,12 +69,10 @@ class TaskController {
       await prisma.task.delete({
         where: { id: parseInt(id) },
       });
-      res
-        .status(200)
-        .json({
-          ...HTTP_CODE.success,
-          detail: `Successfully delete task with id${id}`,
-        });
+      res.status(200).json({
+        ...HTTP_CODE.success,
+        detail: `Successfully delete task with id${id}`,
+      });
     } catch (error) {
       console.log(error);
       req.error = `task ${id} not found`;
